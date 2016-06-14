@@ -1,0 +1,5 @@
+Objective C Tips
+
+UITableView
+
+1、dequeueReusableCellWithIdentifier的两个方法的区别，带indexPath的方法总是返回一个cell（也就是说不可能为空），另一个方法是有可能为nil的;

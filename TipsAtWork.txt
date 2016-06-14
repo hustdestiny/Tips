@@ -3,3 +3,4 @@ Tips at work
 删除所有的.DS_Store				sudo find ~/ -name ".DS_Store" -type f -delete
 禁止.DS_Store 产生				defaults write com.apple.desktopservices DSDontWriteNetworkStores true
 curl http://www.baidu.com
+增加远程的仓库。比如你从开源的仓库fork出来需要同步的时候，那么此时xxx就是开源仓库url，在本地仓库中执行 git remote add upstream xxx
