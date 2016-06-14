@@ -1,0 +1,5 @@
+Tips at work
+
+删除所有的.DS_Store				sudo find ~/ -name ".DS_Store" -type f -delete
+禁止.DS_Store 产生				defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+curl http://www.baidu.com
