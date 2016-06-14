@@ -4,3 +4,70 @@ Tips at work
 禁止.DS_Store 产生				defaults write com.apple.desktopservices DSDontWriteNetworkStores true
 curl http://www.baidu.com
 增加远程的仓库。比如你从开源的仓库fork出来需要同步的时候，那么此时xxx就是开源仓库url，在本地仓库中执行 git remote add upstream xxx
+sublime的package control
+iterm2 
+zsh的安装以及主题的配置oh-my-zsh https://github.com/robbyrussell/oh-my-zsh
+brew的安装
+chrome
+owncloud
+alfred
+ssh
+
+购买苹果账号注意点：注册的名字使用真实姓名，付款人和注册人的信息要一致visa或者master的信用卡付款，否则需要上传身份证验证，整个过程可能需要两到三个工作日
+
+xcode 调试instrument不能使用的解决方案：重启
+	我最终的解决步骤：
+	1、拔掉iPhone的USB线，重启iPhone
+	2、关闭Xcode和Instruments
+	3、重新连接iPhone到Mac上
+	4、重启Xcode并启动Profile
+	5、成功
+
+xcode 快捷键
+
+1.cmd + shift + o(快速打开文件)
+2.ctrl + 6（快速打开方法）
+
+3.cmd +f （在当前文件内查找）
+4.cmd + shift + f（在整个工程中查找）
+5.cmd + g（寻找下一个）
+6.cmd + shift + g（寻找上一个）
+
+7.cmd + ctrl + 上下（切换h,m文件）
+8.cmd + ctrl + 左右 (左上角的前进和后退)
+9cmd + alt + 左右（关闭或者展开大括号）
+
+10. cmd+ alt + [ 和 alt + cmd + ]（选中代码后上下移）
+11.cmd + [ 和 cmd + ](选中代码左右缩进)
+cmd + shift + \
+
+12.cmd + shift + n（新建项目）
+13.cmd + n(新建文件)
+14.ctrl + space （spotlight）
+15.cmd + space (切换输入法)
+16.cmd + / (注释或者打开注释)
+17.cmd + y(关闭或者打开全局注释)
+18.cmd + \ (设置断点或者打开断点)
+19.cmd + r(运行)
+20.cmd + b(编译)
+21.cmd + .(停止)
+22.cmd + ctrl + y (继续运行)
+23.（fn） + f6(单步调试)
+24.（fn）+ f7(单步进入)
+25.（fn）+ f8(单步跳出)
+
+cmd + j(焦点跳转到编辑器)
+cmd + shift + c(焦点跳转到控制台)
+26.cmd + k(清除控制台)
+
+
+27.cmd + enter(正常编辑模式)
+28.cmd + alt + enter（助手模式）
+29.cmd + alt + shift +enter（遇上一次commit比较的模式）
+
+
+30.cmd + 0（左边的文件目录）
+31.cmd + shift + y（底部的调试框）
+32.cmd + alt + 0（右边的工具）
+
+cmd +ctrl + e
