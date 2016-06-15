@@ -72,4 +72,4 @@ cmd + shift + c(焦点跳转到控制台)
 
 cmd +ctrl + e
 
-目前就到这里
+熟悉MarkDown的语法
