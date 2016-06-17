@@ -6,7 +6,9 @@ xcode 调试instrument不能使用的解决方案：重启
 	4、重启Xcode并启动Profile
 	5、成功
 
-xcode 快捷键
+
+# xcode 快捷键 #
+
 
 1.cmd + shift + o(快速打开文件)
 2.ctrl + 6（快速打开方法）
