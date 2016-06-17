@@ -26,7 +26,7 @@
 9. cmd + alt + 左右（关闭或者展开大括号）
 
 10. cmd+ alt + [ 和 alt + cmd + ]（选中代码后上下移）
-11. cmd + [ 和 cmd + ](选中代码左右缩进) cmd + shift + \
+11. cmd + \[ 和 cmd + \](选中代码左右缩进) cmd + shift + \
 
 12. cmd + shift + n（新建项目）
 13. cmd + n(新建文件)
@@ -54,4 +54,5 @@
 32. cmd + alt + 0（右边的工具）
 33. cmd + j(焦点跳转到编辑器)
 34. cmd + shift + c(焦点跳转到控制台)
-35. cmd +ctrl + e(一次性编辑选中的变量)
+35. cmd + shift + j(导航栏跳转到当前正在浏览的文件)
+36. cmd +ctrl + e(一次性编辑选中的变量)
