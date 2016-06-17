@@ -1,20 +1,3 @@
-Tips at work
-
-删除所有的.DS_Store				sudo find ~/ -name ".DS_Store" -type f -delete
-禁止.DS_Store 产生				defaults write com.apple.desktopservices DSDontWriteNetworkStores true
-curl http://www.baidu.com
-增加远程的仓库。比如你从开源的仓库fork出来需要同步的时候，那么此时xxx就是开源仓库url，在本地仓库中执行 git remote add upstream xxx
-sublime的package control
-iterm2 
-zsh的安装以及主题的配置oh-my-zsh https://github.com/robbyrussell/oh-my-zsh
-brew的安装
-chrome
-owncloud
-alfred
-ssh
-
-购买苹果账号注意点：注册的名字使用真实姓名，付款人和注册人的信息要一致visa或者master的信用卡付款，否则需要上传身份证验证，整个过程可能需要两到三个工作日
-
 xcode 调试instrument不能使用的解决方案：重启
 	我最终的解决步骤：
 	1、拔掉iPhone的USB线，重启iPhone
@@ -23,7 +6,9 @@ xcode 调试instrument不能使用的解决方案：重启
 	4、重启Xcode并启动Profile
 	5、成功
 
-xcode 快捷键
+
+# xcode 快捷键 #
+
 
 1.cmd + shift + o(快速打开文件)
 2.ctrl + 6（快速打开方法）
@@ -71,7 +56,3 @@ cmd + shift + c(焦点跳转到控制台)
 32.cmd + alt + 0（右边的工具）
 
 cmd +ctrl + e
-
-熟悉MarkDown的语法
-
-测试一下branch的protect
