@@ -1,19 +1,23 @@
 # instrument调试 #
 
-问题
-1. 手机连接电脑之后调试，instrument不能使用，不能选中
-解决方案：重启
-	我最终的解决步骤：
-	1、拔掉iPhone的USB线，重启iPhone
-	2、关闭Xcode和Instruments
-	3、重新连接iPhone到Mac上
-	4、重启Xcode并启动Profile
-	5、成功
+问题：手机连接电脑之后调试，instrument不能使用，不能选中
 
+解决方案：重启
+
+我最终的解决步骤：
+
+1. 拔掉iPhone的USB线，重启iPhone
+2. 关闭Xcode和Instruments
+3. 重新连接iPhone到Mac上
+4. 重启Xcode并启动Profile
+5. 成功
+
+-
 
 # xcode 快捷键 #
 
 1. cmd + shift + o(快速打开文件)
+2. cmd + shift + 0(打开documentation)
 2. ctrl + 6（快速打开方法）
 
 3. cmd +f （在当前文件内查找）
@@ -47,7 +51,7 @@
 
 27. cmd + enter(正常编辑模式)
 28. cmd + alt + enter（助手模式）
-29. cmd + alt + shift +enter（遇上一次commit比较的模式）
+29. cmd + alt + shift +enter（与上一次commit比较的模式）
 
 30. cmd + 0（左边的文件目录）
 31. cmd + shift + y（底部的调试框）
