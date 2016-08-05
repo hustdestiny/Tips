@@ -18,7 +18,16 @@ if (cell == nil) {
 	* 然而如果没有为tableview注册cell类，则`dequeueReusableCellWithIdentifier:forIndexPath:`会crash，crash原因为“must register a nib or a class for the identifier or connect a prototype cell in a storyboard”，即`dequeueReusableCellWithIdentifier:forIndexPath:`方法必须与register方法配套使用。
 	* 但如果没有为tableview注册cell类，`dequeueReusableCellWithIdentifier:`方法也不会崩溃，只是会返回nil，此时需要我们手动创建cell，如果未创建，则程序会crash，crash原因为“UITableView failed to obtain a cell from its dataSource”，即此时tableView无法获取到cell实例。
 
+## UILabel
 
+* UILabel的frame自适应文字高度变化（来自[这篇文章](http://www.jianshu.com/p/82cab5377228/comments/2641623)）
+
+	1. 使用autolayout设置好label的相对布局
+	2. 设置UIlabel的`preferredMaxLayoutWidth `属性，即最大宽度
+	3. 设置`numberOfLines`，即最大高度
+	4. 现在UILabel可以根据text或者attributedText自动改变高度了
+	5. 如果需要UILabel立即更新frame，可以使用`setNeedsLayout`和`layoutIfNeeded`
+	
 
 ##读这些的源码
 * AFN
