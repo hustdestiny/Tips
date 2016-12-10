@@ -40,6 +40,8 @@ Tips on Objective-C development
 14. cocoapods管理三方框架，现在另一个也比较流行Carthage
 15. 不推荐使用try catch 的方式处理异常，会导致内存泄露，推荐NSError或者 NSAssert(condition, desc, ...)
 16. XCode 插件管理工具Alcatraz
+17. clang -rewrite-objc main.m
+18. 所以合格的代码应该是自解释的，再加上合理的注释。所谓合理的注释就是在可能会引起混淆或不太好理解的地方加上说明。如果你的程序太依赖注释，那就该重构了。
 
 
 ##读这些的源码
