@@ -69,14 +69,57 @@ Closures俗称闭包，和C与OC中的Blocks，或者其他语言中的匿名函
 自动闭包是指包裹着表达式，当它调用的时候才去执行。
 
 ## 枚举
+Swift中的枚举，比C和OC语言中的强大，它不仅仅是整型，还可以是字符串，字符等，而且还可以关联任意类型。其语法是以enum开头，可以写下不同的case，或者同一个case然后用逗号分隔。关联值则是在case 语句中通过let 或者var绑定。
+枚举还可以拥有一个rawValue，这个rawValue可以是String，Characters，Integer和float或者double
+递归的枚举，这个用的比较少啦。讲道理，用到再说啦~
 
 ## 类和结构
+Swift是不区分头文件和实现文件的，统一放在一个叫做.swift的文件中。
+swift中class和struct的联系和区别：
+1.都可以定义存储属性
+2.都可以定义方法
+3.都可以定义下标语法
+4.都可以定义初始化方法
+5.都可以定义extension
+6.遵守协议
+
+1.class可以继承
+2.class可以type casting
+3.class拥有析构方法
+4.class拥有引用计数
+5.class是引用类型，struct是值类型
+6. === 和 !== 可以用来判断两个引用是否是同一个实例
+
+请注意Swift中的String Array 和Dictionary都是值类型！！这一点OC的区别明显
 
 ## 属性
+对象属性分为存储属性和计算属性，枚举只有计算属性
+lazy stored 属性 ，计算属性(set 和get)，只读计算属性的缩略写法
+属性的Observers通过willSet和didSet
+Type 属性
+通过static关键字修饰
+class可以被子类复写的通过class关键字修饰
 
 ## 方法
+enum struct 和 class都可以有方法，这是和OC一个比较大的区别
+对象方法
+mutating 用来修饰struct和enum中修改了对象值的方法
+
+Type 方法
+通过static修饰
+class可以被子类复写的通过class关键字修饰
 
 ## 下标
+```
+subscript(index: Int) -> Int {
+    get {
+        // return an appropriate subscript value here
+    }
+    set(newValue) {
+        // perform a suitable setting action here
+    }
+}
+```
 
 ## 继承
 
