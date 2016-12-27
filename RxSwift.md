@@ -265,3 +265,99 @@ example("doOn") {
 ```
 注意
 有doOnNext(_:),doOnError(_:)和doOnCompleted(_:)便利方法去截获这个特殊事件，并且doOn(onNext:onError:onCompleted:)去截获一个或者多个事件在一次调用中。
+
+## Working with Subjects
+一个Subject是一个有序的桥接或者是代理，它是Rx的实现，它扮演的角色即使observer也是Observable。因为他是个Observer,它可以订阅一个或者多个Observables，又因为它也是个Observable，它可以传递他观察到的元素 通过重新发射他们，并且他们可以发射新的元素。
+```
+extension ObservableType {
+    func addObserver(_ id: String) -> Disposable {
+        return subscribe { print("Subscription:", id, "Event:", $0) }
+    }
+}
+
+func writeSequenceToConsole<O: ObservableType>(name: String, sequence: o) -> Disposable {
+    return sequence.subscribe {event in 
+        print("Subscription: \(name), event: \(event)")
+    }
+}
+
+```
+
+### PublishSubject
+在订阅时对所有他们的观察者广播新的事件
+
+```
+example("PublishSubject") {
+    let disposeBag = DisposeBag()
+    let subject = PublishSubject<String>()
+
+    subject.addObserver("1").addDisposableTo(disposeBag)
+    subject.onNext("A")
+    subject.onNext("B")
+    subject.onNext("C")
+
+    subject.addObserver("2").addDisposableTo(disposeBag)
+    subject.onNext("D")
+    subject.onNext("E")
+}
+```
+注意
+这个例子也介绍了使用 onNext(_:)的便利方法，相当于使用了on(.next(_:)),它使用提供的元素产生一个新的Next事件发射给他的订阅者们。也有OnError(_:)和onCompleted()的便利方法，相当于on(.error(_:))和on(.completed)
+
+### ReplaySubject
+广播新的事件给所有的订阅者，而且指定之前事件的bufferSize数字给新的订阅者
+```
+example("ReplaySubject") {
+    let disposeBag = DisposeBag()
+    let subject = ReplaySubject<String>.create(bufferSize: 1)
+    subject.addObserver("1").addDisposableTo(disposeBag)
+    subject.onNext("dog")
+    subject.onNext("cat")
+
+    subject.addObserver("2").addDisposableTo(disposeBag)
+    subject.onNext("apple")
+    subject.onNext("banala")
+}
+```
+
+### BehaviorSubject
+将所以之前的value也都广播发送给订阅者
+```
+example("BehaviorSubject") {
+    let disposeBag = DisposeBag()
+    let subject = BehaviorSubject(value: "apple")
+
+    subject.addObserver("1").addDisposableTo(disposeBag)
+    subject.onNext("dog")
+    subject.onNext("cat")
+
+    subject.addObserver("2").addDisposableTo(disposeBag)
+    subject.onNext("A")
+    subject.onNext("B")
+
+    subject.addObserver("3").addDisposableTo(disposeBag)
+    subject.onNext("apple")
+    subject.onNext("orange")
+}
+```
+笔记
+注意什么在之前的例子中丢失了？一个完成的事件。PublishSubject, ReplaySubject 和 BehaviorSubject 不会自动发射完成事件，当他们将要被回收的时候。
+
+Variable
+封装了一个BehaviorSubject, 所以它将会发射绝大部分value给新的订阅者。并且Variable也维护当前的value状态。Variable将不会发射错误事件。然而，它将会发射一个完成事件并且在deinit中结束。
+```
+example("Variable") {
+    let disposeBag = Disposable()
+    let variable = Variable("apple")
+
+    variable.asObservable().addObserver("1").addDisposableTo(disposeBag)
+    variable.value = "dog"
+    variable.value = "cat"
+
+    variable.asObservable().addObserver("2").addDisposableTo(disposeBag)
+    variable.value = "A"
+    variable.value = "B"
+}
+```
+笔记
+用Variable实例调用asObservable()方法 为了访问它底层的BehaviSubject序列。Variables 没有实现on操作符(onNext(_:)),但是取而代之的暴露一个value属性，这个属性可以用来获得当前的value，同时也可以设置一个新的值。设置一个新的value将会添加底层的BehaviorSubject序列中
