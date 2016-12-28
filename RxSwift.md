@@ -190,7 +190,7 @@ example("repeatElement") {
 }
 ```
 注意
-这个例子也介绍了使用take操作符从序列开始后返回固定数目的元素
+这个例子也介绍了使用take运算符从序列开始后返回固定数目的元素
 
 generate
 创建一个Observable序列，生成值只要提供的条件是true
@@ -360,4 +360,662 @@ example("Variable") {
 }
 ```
 笔记
-用Variable实例调用asObservable()方法 为了访问它底层的BehaviSubject序列。Variables 没有实现on操作符(onNext(_:)),但是取而代之的暴露一个value属性，这个属性可以用来获得当前的value，同时也可以设置一个新的值。设置一个新的value将会添加底层的BehaviorSubject序列中
+用Variable实例调用asObservable()方法 为了访问它底层的BehaviSubject序列。Variables 没有实现on运算符(onNext(_:)),但是取而代之的暴露一个value属性，这个属性可以用来获得当前的value，同时也可以设置一个新的值。设置一个新的value将会添加底层的BehaviorSubject序列中
+
+## Combination Operators
+运算符会组合多个Observable源到一个Observable。
+
+### startWith
+在它从source开始发射元素之前，发射指定的元素序列
+
+```
+example("startWith") {
+    let disposeBag = DisposeBag()
+    Observable.of("dog", "cat", "mouse", "rabbit")
+        .startWith("1")
+        .startWith("2")
+        .startWith("3")
+        .subscribe(onNext: {print($0) })
+        .addDisposable(disposeBag)
+}
+```
+笔记
+正如这个例子表明的，startWith 可以以后进先出为基础，也就是说，每一个成功的startWith元素将会预先放在主要的startWith元素之前。
+
+### merge
+将源Observable序列组合成一个新的Observable序列，并且会发射每一个元素正如它从source Observable序列一样
+
+```
+example("merge") {
+    let disposeBag = DisposeBag()
+    let subject1 = PublishSubject<String>()
+    let subject2 = PublishSubject<String>()
+
+    Observable.of(subject1, subject2)
+        .merge()
+        .subscribe(onNext: { print($0)})
+        .addDisposableTo(disposeBag)
+
+    subject1.onNext("A")
+    subject1.onNext("B")
+
+    subject2.onNext("1")
+    subject2.onNext("2")
+
+    subject1.onNext("ab")
+    subject2.onNext("3")
+}
+```
+
+### zip
+将最多将8个source Observable序列组合一个新的Observable序列，并且将会发射每一个组合而成的Observable序列的元素
+```
+example("zip") {
+    let disposeBag = DisposeBag()
+    let stringSubject = PublishSubject<String>()
+    let intSubject = PublishSubject<Int>()
+    Observable.zip(stringSubject, intSubject) { stringSubject, intElement in]
+        "\(stringElement)\(intElement)"
+        }
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+    stringElement.onNext("A")
+    stringElement.onNext("B")
+
+    intSubject.onNext(1)
+    intSubject.onNext(2)
+
+    stringSubject.onNext("AB")
+    intSubject.onNext(3)
+}
+```
+
+
+## combineLastest
+将最多8个source Observable 序列组合成一个新的Observable序列，一旦所有source序列发射至少一个元素，将最新的元素组合而成的序列将会发射元素。任何soure Observable序列发射一个新的元素
+```
+example("combineLastest") {
+    let disposeBag = DisposeBag()
+    let stringSubject = PublishSubject<String>()
+    let intSubject = PublishSubject<Int>()
+
+    Observable.combineLastest(stringSubject, intSubject) { stringElement, intElement in
+        "\(stringElement)\(intElement)"
+        }
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+    stringElement.onNext("A")
+    stringElement.onNext("B")
+    intSubject.onNext(1)
+    intSubject.onNext(2)
+    stringSubject.onNext("AB")
+}
+```
+
+```
+example("Array.combineLastest") {
+    let disposeBag = DisposeBag()
+    let stringObservable = Observable.just("1")
+    let fruitObservable = Observable.from(["apple", "orange", "banana"])
+    let animalObservable = Observable.of("dog", "cat", "mouse", "rabbit")
+
+    Observable.combineLastest([stringObservable, fruitObservable, animalObservable]) {
+        "\($0[0])\($0[1])\($0[2])"
+        }
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+笔记
+combineLastest 扩展在Array 需要所有的Observable序列都是同一个类型
+
+## switchLatest
+将由Observable序列发射的元素转换为Observable序列，并从最近的内部Observable序列发射元素。
+
+```
+example("switchLatest") {
+    let disposeBag = DisposeBag()
+    let subject1 = BehaviorSubject(value: "football")
+    let subject2 = BehaviorSubject(value: "apple")
+    let variable = Variable(subject1)
+
+    variable.asObservable()
+        .switchLatest()
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+
+    subject1.onNext("basketball")
+    subject1.onNext("vallball")
+
+    variable.value = subject2
+
+    subject1.onNext("ball")
+    subject2.onNext("xxx")
+}
+```
+笔记
+在这个例子中，在设置了variable.value值为subject2之后添加ball元素没有任何的影响，因为仅仅是最近的内部的Observable序列将会发射元素。
+
+## Transforming Operators
+运算符它们将下一个元素发射通过一个Observable序列
+
+### map
+将Observable序列发射的元素应用一个转换闭包，返回一个新的转换后Observable序列
+```
+example("map") {
+    let disposeBag = DisposeBag()
+    Observable.of(1, 2, 3)
+        .map { $0 * $0 }
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+### flapMap and flatMapLatest
+转换Observable序列发射的元素到Observable序列中去，并且两个Observable序列合并成一个序列。当你有一个Observable序列它自己发射Observable序列的时候特别有作用，并且当你想要能够对新的Observable序列做出响应的时候。flatMap和flatMapLatest的不同点是，flatMapLatest将仅仅发射最近的Observable序列的元素。
+```
+example("flatMap and flatMapLatest") {
+    let disposeBag = DisposeBag()
+    struct Player {
+        var score: Variable<Int>
+    }
+    let man = Player(score: Variable(80))
+    let woman = Player(score: Variable(90))
+
+    let player =Variable(man)
+    player.asObservable()
+        .flatmap { $0.score.asObservable() }
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+
+    man.score.value = 85
+    player.value = woman
+
+    man.score.value = 95
+    woman.score.value = 100
+}
+```
+笔记
+在这个例子中，使用flatMap可能好出乎意料的结果。在赋值woman 给 player.value后，woman.value 将要开始发射元素。但是之前的内部的Observable序列man.score 也将要发射元素。通过改变flatMap到faltMapLatest,仅仅最近的内部序列woman.score 将会发射元素。那么设置man.score.value 到95不会产生影响
+笔记
+flatMapLatest 时间上是map和switchLatest运算的组合
+
+### scan
+有一个seed开始，对Observable序列发射的每个元素应用计算闭包，返回一个单元素的Observable序列
+```
+example("scan") {
+    let disposeBag = DisposeBag()
+    Observable.of(10, 100, 1000)
+        .scan(1){ aggregateValue, newValue in
+            aggregateValue + newValue
+        }
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+## Filtering and Conditional Operators
+这些运算符对于source Observable序列中发射出来的元素进行选择
+
+### filter
+仅仅发射那些从Observable序列中发射出来并满足指定条件的元素
+
+```
+example("filter") {
+    let disposeBag = DisposeBag()
+    Observable.of(
+        "1", "2", "3",
+        "4", "5", "6",
+        "7", "8", "9")
+        .filter {
+            $0 == "5"
+        }
+        .subscribe(onNext: {print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+### distinctUntilChanged
+抑制Observable序列发射的连续的重复的元素
+```
+example("distinctUntilChanged"){
+    let disposeBag = DisposeBag()
+    Observable.of("1", "2", "1", "1", "1", "6", "1")
+        .distinctUntilChanged()
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+### elementAt
+仅仅发射在Observable序列指定位置的元素
+```
+example("elementAt") {
+    let disposeBag = DisposeBag()
+    Observable.of("0", "1", "2", "3", "4")
+        .elementAt(3)
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+### single
+仅仅发射第一个（或者第一个满足条件）的由Observable序列发射的元素。如果Observable序列没有发射元素它将会抛出错误。
+```
+example("single") {
+    let disposeBag = DisposeBag()
+    Observable.of("0", "1", "2", "3")
+        .single()
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+
+
+example("single with conditions") {
+    let disposeBag = DisposeBag()
+    
+    Observable.of("🐱", "🐰", "🐶", "🐸", "🐷", "🐵")
+        .single { $0 == "🐸" }
+        .subscribe { print($0) }
+        .addDisposableTo(disposeBag)
+    
+    Observable.of("🐱", "🐰", "🐶", "🐱", "🐰", "🐶")
+        .single { $0 == "🐰" }
+        .subscribe { print($0) }
+        .addDisposableTo(disposeBag)
+    
+    Observable.of("🐱", "🐰", "🐶", "🐸", "🐷", "🐵")
+        .single { $0 == "🔵" }
+        .subscribe { print($0) }
+        .addDisposableTo(disposeBag)
+}
+```
+
+### take
+从Observable序列的开头发射指定数目的元素
+
+```
+example("take") {
+    let disposeBag = DisposeBag()
+    Observable.of("1", "2", "3", "4")
+        .take(3)
+        .subscribe(onNext: {print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+tabeLast
+从Observable序列的末尾发射指定数目的元素
+```
+example("takeLast"){
+    let disposeBag = DisposeBag()
+    Observable.of("1", "2", "3", "4" ,"5")
+        .tabeLast(3)
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+tableWhile
+从Observable序列的开头发射元素,只要它满足条件。
+```
+example("takeWhile") {
+    let disposeBag = DisposeBag()
+    Observable.of(1, 2, 3, 4, 5, 6)
+        .tableWhile{ $0 < 4}
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+takeUntil
+从Observable序列中发射元素，直到一个引用序列发射了一个元素
+
+```
+example("takeUntil"){
+    let disposeBag = DisposeBag()
+
+    let sourceSequence = PublishSubject<String>()
+    let referenceSequence = PublishSubject<String>()
+
+    sourceSequence
+        .takeUntil(referenceSequence)
+        .subscribe{ print($0) }
+        .addDisposableTo(disposeBag)
+    sourceSequence.onNext("cat")
+    sourceSequence.onNext("rabbit")
+    sourceSequence.onNext("dog")
+
+    referenceSequence.onNext("apple")
+
+    sourceSequence.onNext("frog")
+    sourceSequence.onNext("pig")
+    sourceSequence.onNext("monkey")
+}
+```
+
+### skip
+过滤发射Observable序列中从头开始指定数目的元素
+```
+example("skip"){
+    let disposeBag = DisposeBag()
+    Observable.of("cat", "rabbit", "dog", "frog", "pig")
+        .skip(2)
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+### skipWhile
+过滤发射Observable序列中从头开始满足条件的元素
+```
+example("skip"){
+    let disposeBag = DisposeBag()
+
+    Observable.of(1, 2, 3, 4, 5)
+        .skipWhile( $0 < 4)
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+### skipWhileWithIndex
+过滤发射Observable序列中从头开始满足条件的元素， 并且发射与下的元素，闭包传递了元素的Index
+```
+example("skipWhileWithIndex") {
+    let disposeBag = DisposeBag()
+
+    Observable.of("cat", "rabbit", "dog", "frog" , "pig")
+        .skipWhileWithIndex{ element, index in
+            index < 3
+        }
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+### skipUntil
+过滤发射source Observable的元素，直到一个引用的Observable序列发射了一个元素
+```
+example("skipUntil") {
+    let disposeBag = DisposeBag()
+
+    let sourceSequence = PublishSubject<String>()
+    let referenceSequence = PublishSubject<String>()
+
+    sourceSequence
+        .skipUntil(referenceSequence)
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+
+    sourceSequence.onNext("cat")
+    sourceSequence.onNext("rabbit")
+    sourceSequence.onNext("dog")
+
+    referenceSequence.onNext("apple")
+
+    sourceSequence.onNext("frog")
+    sourceSequence.onNext("pig")
+    sourceSequence.onNext("monkey")
+}
+```
+
+## Mathematical and Aggregate Operators
+操作符操作Observable发射出来的全部序列
+
+### toArray
+将Observable序列转换成Array，将这个array作为Observable的单个元素发射，并且正常结束。
+
+```
+example("toArray") {
+    let disposeBag = DisposeBag()
+
+    Observable.range(start: 1, count: 10)
+        .toArray()
+        .subscribe { print($0) }
+        .addDisposable(disposeBag)
+}
+```
+
+### reduce
+从一个seed初值开始，然后对Observable发射的所有的元素应用计算闭包，返回一个聚合之后的元素作为一个单个的元素。
+
+```
+example("reduce") {
+    let disposeBag = DisposeBag()
+    Observable.of(10, 100, 1000)
+        .reduce(1, accumulater: +)
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+### concat
+连接OBservable内部序列发射的所有元素，等待在下一个序列发射元素每一个序列正常结束，
+```
+example("concat") {
+    let disposeBag = DisposeBag()
+    let subject1 = BehaviorSubject(value: "apple")
+    let subject2 = BehaviorSubject(value: "dog")
+
+    let variable = Variable(subject1)
+
+    variable.asObservable()
+        .concat()
+        .subscribe { print($0) }
+        .addDisposableTo(disposeBag)
+
+    subject1.onNext("orange")
+    subject1.onNext("banana")
+
+    variable.value = subject2
+    subject2.onNext("I would be ignored")
+    subject2.onNext("cat")
+
+    subject1.onCompleted()
+    subject2.onNext("mouse")
+}
+```
+
+## Connectable Operators
+可连接的可观察序列类似于普通的可观察序列，除了它们在订阅时不开始发射元素，而是仅当调用它们的connect（）方法时。 这样，您可以等待所有预期的订阅者在开始发出元素之前订阅可连接的Observable序列。
+
+```
+func sampleWithoutConnectableOperators(){
+    printExampleHeader(#function)
+    let interval = Observable<Int>.interval(1, scheduler: MainScheduler.instance)
+
+    _ = interval.subscribe(onNext: { print("Subscription: 1, Event: \($0)") })
+
+    delay(5) {
+        _ = interval
+            .subscribe(onNext: { print("Subscription: 2, Event: \($0)") })
+    }
+}
+```
+笔记
+interval 创建了一个Observable序列，它每隔一段时间在指定的间隔发射序列。
+
+### publish
+
+将一个source Observable序列转换成一个可连接的序列
+```
+func sampleWithPublish() {
+    printExampleHeader(#function)
+
+    let intSequence = Observable<Int>.interval(1, scheduler: MainScheduler.instance).publish()
+
+    _ = intSequence
+        .subscribe(onNext: { print("Subscription 1:, Event: \($0)") })
+    delay(2) { _ = intSequence.connect() }
+    delay(4) {
+        _ = intSequence
+            .subscribe(onNext: { print("Subscription 2:, Event: \($0)") })
+    }
+
+    delay(6) {
+        _ = intSequence
+            .subscribe(onNext: { print("Subscription 3:, Event: \($0)") })
+    }
+}
+```
+
+### replay
+将一个source Observable序列转换成可连接的序列，并且将会重新发射bufferSize数目的之前发射的元素给每一个订阅者。
+
+```
+func sampleWithReplayBuffer() {
+    printExampleHeader(#function)
+
+    let intSequence = Observable<Int>.interval(1, scheduler: MainScheduler.instance)
+    .replay(5)
+
+    _ = intSequence
+        .subscribe(onNext: { print("Subscription 1:, Event: \($0)") })
+    delay(2) { _ = intSequence.connect() }
+    delay(4) {
+        _ = intSequence
+            .subscribe(onNext: { print("Subscription 2:, Event: \($0)") })
+    }
+
+    delay(8) {
+        _ = intSequence
+            .subscribe(onNext: { print("Subscription 3:, Event: \($0)") })
+    }
+}
+```
+
+### multicast
+将一个source Observable序列转换为一个可连接序列，并且通过指定的Subject广播他的元素。
+
+```
+func sampleWithMulticast() {
+    printExampleHeader(#function)
+
+    let subject = PublishSubject<Int>()
+    _ = subject
+        .subscribe(onNext: { print("Subject: \($0)") })
+    let intSequence = Observable<Int>.interval(1, scheduler: MainScheduler.instance)
+    .multicast(subject)
+
+    _ = intSequence
+        .subscribe(onNext: { print("\tSubscription 1:, Event: \($0)") })
+    delay(2){ _ = intSequence.connect() }
+    delay(4) {
+        _ = intSequence
+            .subscribe(onNext: { print("\tSubscription 2:, Event: \($0)" })
+    }
+    delay(6) {
+        _ = intSequence
+            .subscribe(onNext: { print("\tSubscription 3:, Event: \($0)" })
+    }
+}
+```
+
+## Error Handling Operators
+运算符帮助你从Observable序列的error notification中恢复
+
+### catchErrorJustReturn
+当Observable序列发射了一个error，它发射一个元素然后发射一个完成元素。
+```
+example("catchErrorJustReturn") {
+    let disposeBag = DisposeBag()
+    let sequenceThatFails = PublishSubject<String>()
+
+    sequenceThatFails
+        .catchErrorJustReturn("haha")
+        .subscribe { print($0) }
+        .addDisposableTo(disposeBag)
+
+    sequenceThatFails.onNext("1")
+    sequenceThatFails.onNext("2")
+    sequenceThatFails.onNext("3")
+    sequenceThatFails.onNext("4")
+    sequenceThatFails.onError("error")
+}
+```
+
+### catchError
+当发生错误的时候切换到一个恢复的序列
+
+```
+example("catchError") {
+    let disposeBag = DisposeBag()
+    let sequenceThatFails = PublishSubject<String>()
+    let recoverSequence = PublishSubject<String>()
+
+    sequenceThatFails
+        .catchError {
+            print("Error:", $0)
+            retrun recoverSequence
+        }
+        .subscribe { print($0) }
+        .addDisposableTo(disposeBag)
+    sequenceThatFails.onNext("1")
+    sequenceThatFails.onNext("2")
+    sequenceThatFails.onNext("3")
+    sequenceThatFails.onNext("4")
+    sequenceThatFails.onError("error")
+    
+    recoverSequence.onNext("haha")   
+}
+```
+
+### retry
+当Observable序列发射错误的时候，无限重新发射
+```
+example("retry") {
+    let disposeBag =DisposeBag()
+    var count = 1
+    let sequenceThatErrors = Observable<String>.create { observer in
+        observer.onNext("apple")
+        observer.onNext("banana")
+        observer.onNext("orange")
+        if count == 1 {
+            observer.onError("error")
+            print("Error encountered")
+            count += 1
+        }
+
+        observer.onNext("cat")
+        observer.onNext("dog")
+        observer.onNext("mouse")
+        return Disposables.create()
+    }
+
+    sequenceThatErrors
+        .retry()
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
+
+### retry(_:)
+重复从错误中恢复，并指定一个最大尝试数目。
+```
+example("retry") {
+    let disposeBag =DisposeBag()
+    var count = 1
+    let sequenceThatErrors = Observable<String>.create { observer in
+        observer.onNext("apple")
+        observer.onNext("banana")
+        observer.onNext("orange")
+        if count < 5 {
+            observer.onError("error")
+            print("Error encountered")
+            count += 1
+        }
+
+        observer.onNext("cat")
+        observer.onNext("dog")
+        observer.onNext("mouse")
+        observer.onCompleted()
+        return Disposables.create()
+    }
+
+    sequenceThatErrors
+        .retry(3)
+        .subscribe(onNext: { print($0) })
+        .addDisposableTo(disposeBag)
+}
+```
