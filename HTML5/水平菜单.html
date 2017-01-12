@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>水平菜单</title>
+	<style type="text/css">
+		*{margin: 0;padding: 0;font-size: 14px;}
+		ul{list-style: none; }
+		li{float: left; }
+		a{text-decoration: none;display: block;height: 30px; line-height: 30px; width: 100px; background-color: #ccc;margin-bottom: 1px;text-align: center;}
+		a:hover{background-color: #c00; color: white;}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+			var a = document.getElementsByTagName('a')
+			for (var i = 0; i < a.length; i++) {
+				a[i].onmouseover = function(){
+					clearInterval(this.time)
+					var This = this;
+					This.time = setInterval(function(){
+						This.style.width = This.offsetWidth + 8 + 'px';
+						if (This.offsetWidth >= 160) {
+							clearInterval(This.time)
+						}
+					}, 30)
+				}
+				a[i].onmouseout = function(){
+					clearInterval(this.time)
+					var This = this;
+					This.time = setInterval(function(){
+						This.style.width = This.offsetWidth - 8 + 'px';
+						if (This.offsetWidth <= 100) {
+							This.style.width = 100
+							clearInterval(This.time)
+						}
+					}, 30)
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<ul>
+		<li><a>首   页</a></li>
+		<li><a>新闻快讯</a></li>
+		<li><a>产品展示</a></li>
+		<li><a>售后服务</a></li>
+		<li><a>联系我们</a></li>
+	</ul>
+</body>
+</html>
