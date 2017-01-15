@@ -147,19 +147,68 @@ tip！可以用闭包赋值给一个属性
 循环引用是指对象相互引用，彼此都不能释放，解决方式有两种一是weak，二是unowned，weak会自动置为nil，unowned不会。
 
 ## Optional Chaining
+可选值链是一个处理调用属性，方法，下标可能为nil的过程。一旦整个过程中有值为nil，整个结果就是nil。
 
 ## Error Handing
+四种方式
+do catch的写法
+try?
+try!
+或者继续向上throw
+
+defer用在处理一些清理工作
 
 ## 类型转换
+is 用于检查类型
+as 用于转换类型 as!强制转换，as？非强制
 
-## 
+这里要区分Any和AnyObject，AnyObject专指class类型
+
+## 嵌套类型
+这好像没啥好说的了。。作用域而已
 
 ## 扩展
+这个是Swift的重头戏。
+Extension可以为已经存在的类，结构体，枚举，协议增加新的功能。有一点类似OC的category，但是Extension没有名字。
+1.可以增加实例的计算属性，也可以增加类型的计算属性。
+2.增加实例的方法，增加类型的方法。
+3.提供新的初始化方法。
+4.定义下标语法。
+5.定义和使用新的内嵌类型。
+6.使已存在的类型，遵守协议。
 
 ## 协议
+这也是Swift的核心。
+Protocol可以看成一个类型。
+Protocol的委托模式。
+Protocol可以继承。
+Protocol组合使用。
+
+class-only的Protocol
 
 ## 泛型
+很多高深的玩意就是基于泛型的，真是厉害哦。毕竟简版C++
+
+泛型是可以根据传入的值，类型推导出来的
+
+泛型可以扩展。
+泛型也可以约束。
+
+关联类型Associated Types
+在协议中使用这种关联值
 
 ## 访问限制
 
+open 代码完全公开，可以在任何地方进行子类化。一般用在 UIKit 和 Foundation 类中，鼓励继承
+public 代码对外完全可见，但在同一个 module 中才允许继承
+internal 代码对同一个 module 中的可见
+fileprivate 代码在同一个文件内可见
+private 代码只针对同一个声明内可见
+
 ## 先进运算符
+位运算
+溢出运算
+自定义运算符
+
+## 结尾~~~
+写到最后就有点草率了。
