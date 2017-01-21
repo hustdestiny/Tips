@@ -11,8 +11,8 @@
 ## Tool ##
 - XCode
 - iterm2 zsh的安装以及主题的配置oh-my-zsh [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) 
-- alfred
-- sublime
+- alfred workflow的自定义
+- sublime shift + cmd + p 万能快捷键 
 - git
 - chrome
 - owncloud
