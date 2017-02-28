@@ -12,8 +12,6 @@
 4. 重启Xcode并启动Profile
 5. 成功
 
--
-
 # xcode 快捷键 #
 
 1. cmd + shift + o(快速打开文件)

@@ -5,7 +5,7 @@
 - Swift
 - JavaScript
 - Python
-- Java
+- C++
 - MarkDown
 
 ## Tool ##
