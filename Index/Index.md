@@ -13,7 +13,8 @@
 - iterm2 zsh的安装以及主题的配置oh-my-zsh [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) 
 - alfred workflow的自定义
 - sublime shift + cmd + p 万能快捷键 
-- git
+- git 
+当iOS，pb文件总是有冲突的 [解决方案](http://roadfiresoftware.com/2015/09/automatically-resolving-git-merge-conflicts-in-xcodes-project-pbxproj/)
 - chrome
 - owncloud
 - brew
