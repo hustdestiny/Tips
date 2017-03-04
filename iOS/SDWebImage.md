@@ -1,6 +1,6 @@
 SDWebImage[传送门](https://github.com/rs/SDWebImage)
 
-1. 调用逻辑
+ 调用逻辑
 (1) 
 ```
 - (void)sd_setImageWithURL:(nullable NSURL *)url placeholderImage:(nullable UIImage *)placeholder
@@ -27,7 +27,9 @@ UIImageView的总的方法
                           progress:(nullable SDWebImageDownloaderProgressBlock)progressBlock
                          completed:(nullable SDExternalCompletionBlock)completedBlock
 ```
+
 UIView内部的方法
+
 1. 根据self的class生成字符串作为key
 2. 取消self上图片的下载（这是为了防止tableView滚动导致先下载的图片慢，后下载的图片快，覆盖后下载的导致错乱）
 3. 给UIView加一个属性，imageUrl,值为url
@@ -37,16 +39,16 @@ UIView内部的方法
 7. 有url，判断是否能够显示Indicator
 8. 弱引用self
 9. 通过SDWebImageManager，下载图片，返回一个operation
-    10. 强引用weakSelf,并且下一行中判空，强引用为了防止多线程在运行期释放，判断为了防止nil导致不必要的错误
-    11. 在回到主线程继续判空，理由同上
-    12. 如果存在image,并且是禁止自动设置图片，并且存在completedBlock ，则回调
-    13. 如果存在图片，则通过setImageBlock完成图片设置
-    14. 如果不存在image,并且设置了延迟placeholder则设置placeholder图片
-    15. 如果有成功的回调，并且finished调用工程回调
-16. 设置这个operation
-    17. 如果key存在，则根据key先取消UIView上图片下载operation
-    18. 如果operation存在将operation,放到UIView关联的Dictionary中
-    
+    1. 强引用weakSelf,并且下一行中判空，强引用为了防止多线程在运行期释放，判断为了防止nil导致不必要的错误
+    2. 在回到主线程继续判空，理由同上
+    3. 如果存在image,并且是禁止自动设置图片，并且存在completedBlock ，则回调
+    4. 如果存在图片，则通过setImageBlock完成图片设置
+    5. 如果不存在image,并且设置了延迟placeholder则设置placeholder图片
+    6. 如果有成功的回调，并且finished调用工程回调
+10. 设置这个operation
+    1. 如果key存在，则根据key先取消UIView上图片下载operation
+    2. 如果operation存在将operation,放到UIView关联的Dictionary中
+        
 (4)
 ```
 - (id <SDWebImageOperation>)loadImageWithURL:(nullable NSURL *)url
