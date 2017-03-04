@@ -1,5 +1,6 @@
 Runtime4-706[传送](https://opensource.apple.com/tarballs/objc4/)
-**:warning:本文主要参考博客[传送](http://zxfcumtcs.github.io/2014/07/08/Objective-c-Object-Model/)
+
+**:warning:本文主要参考博客[传送](http://zxfcumtcs.github.io/2014/07/08/Objective-c-Object-Model/)**
 1. 首先来看NSObject，很好只有一个暴露属性的属性isa(这其实是is a point 的简写)
 ```
 @interface NSObject <NSObject> {
