@@ -1,4 +1,4 @@
-#AFNetworking[传送](https://github.com/AFNetworking)
+#AFNetworking3.1.0[传送](https://github.com/AFNetworking)
 
 1. 本地化字符串的宏
 NSLocalizedStringFromTable(key, table, comment)
