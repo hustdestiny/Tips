@@ -7,6 +7,12 @@ NSLocalizedStringFromTable(key, table, comment)
 位运算
 inline函数使用
 主线程发通知
+NSStringFromSelector(_cmd),可以获得方法名的字符串
+
+线程的同步
+dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+dispatch_semaphore_signal(semaphore);
+dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
 
 3. 调用流程
     (1)
