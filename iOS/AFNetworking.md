@@ -14,6 +14,9 @@ dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
 dispatch_semaphore_signal(semaphore);
 dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
 
+//KVC
+tasks = [@[dataTasks, uploadTasks, downloadTasks]valueForKeyPath:@"@unionOfArrays.self"];
+
 3. 调用流程
     (1)
     ```
