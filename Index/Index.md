@@ -32,6 +32,7 @@
 ## Others ##
 * 删除所有的.DS_Store		`sudo find ~/ -name ".DS_Store" -type f -delete`
 * 禁止.DS_Store 产生		`defaults write com.apple.desktopservices DSDontWriteNetworkStores true`
+* 列出5000端口被哪个占用  `lsof -i:5000`
 
 * 购买苹果账号注意点：注册的名字使用真实姓名，付款人和注册人的信息要一致visa或者master的信用卡付款，否则需要上传身份证验证，整个过程可能需要两到三个工作日
 
