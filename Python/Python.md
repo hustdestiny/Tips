@@ -59,4 +59,18 @@ class SubClass(BaseClass) {
 
 ```
 
+virtualenv --no-site-packages venv
+source venv/bin/activate
+deactivate
+
+pip3 install -r requirements.txt
+pip3 freeze > requirements.txt
+
+pip3 install flask
+pip3 install flask-sqlalchemy
+pip3 install mysql-connector-python-rf
+
+engine = create_engine('mysql+mysqlconnector://root:@localhost:3306/awesome')
+<!--engine = create_engine('数据库种类名+连接名://用户名:密码@主机:端口号/数据库名')-->
+
 
