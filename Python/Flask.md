@@ -18,6 +18,12 @@ if __name__ == "__main__":
 
 此时localhost的5000端口开启一个服务端程序,在浏览器中打开可以看到helloworld,这已经是最简洁的服务端程序了
 
+## mac起一个flask写的web服务器，iphone访问流程
+1. 将mac 和 iPhone 连接到同一个wifi环境下
+2. app.run(host='10.220.19.191', port=5000) 一定要配置这两项
+3. 将防火墙什么的关了。起服务，然后就可以正常工作了
+4. 有时候可能需要断一下wifi
+
 ## Flask 其他基础的配置
 
 virtaulenv --no-site-packages venv
