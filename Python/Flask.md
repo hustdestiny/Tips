@@ -1,6 +1,11 @@
 # Flask
 python中较火的web框架，插件众多，简洁优雅
 Flask中使用jinja2的模板
+Flask中使用Werkzeug作为网络层的核心
+
+templates和static文件夹位于应用的子目录下
+
+Flask(__name__)是为了Flask寻找templates和static文件夹位置
 
 ## Flask hello world
 
@@ -23,6 +28,16 @@ if __name__ == "__main__":
 2. app.run(host='10.220.19.191', port=5000) 一定要配置这两项
 3. 将防火墙什么的关了。起服务，然后就可以正常工作了
 4. 有时候可能需要断一下wifi
+5. iOS客户端发送post请求时form["key"]取不到对应的key值就会400错误
+6. mysql中存储中文的问题
+7. first_or_404会直接给客户端返回404
+8. db.session.add(user) 之后user对象的id什么的就有啦
+9. 不可以直接返回字典，需要jsonify()包装一下
+10. 如果需要客户端Alamofire中发送json形式的参数，
+那么在header中设置Content-Type="application/json"， encoding:使用JSONEncoding.default,Flask中使用request.get_json()则可以取出post的dict，
+encoding:使用在URLEncoding.default,中取出request.values中取出get请求的参数
+11. 从数据库中取出的数据还存在很大的编码问题，目前主要解决方案是mysql将库和表latin-->utf-8,还在数据库的配置里usr/local/mysql***/my.cnf中添加`default-charater-set = utf8`，但是还未有明显的作用。目前的解决方案是在发送给客户端的时候encode('utf-8')
+12. 
 
 ## Flask 其他基础的配置
 
