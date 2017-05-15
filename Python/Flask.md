@@ -8,7 +8,7 @@ templates和static文件夹位于应用的子目录下
 Flask(__name__)是为了Flask寻找templates和static文件夹位置
 
 ## Flask hello world
-
+    
 ```python
 from flask import Flask
 app = Flask(__name__)
