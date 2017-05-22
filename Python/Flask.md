@@ -105,6 +105,17 @@ res = make_response("")
 res.set_cookie("key", "value")
 
 
+## Extension
+
+1. flask-sqlalchemy
+2. flask-restful
+3. flask-oauth
+4. flask-babel
+5. flask-wtf
+6. flask-login
+7. flask-mail
+
+
 
 
 
