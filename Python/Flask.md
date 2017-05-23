@@ -116,6 +116,13 @@ res.set_cookie("key", "value")
 7. flask-mail
 
 
-
+我理解的一个flask开发流程
+0. virtualenv  设置虚拟环境，freeze操作
+1. blueprint划分模块
+2. flask-sqlalchemy建立模型以及关系
+3. config配置
+4. restful定义接口，auth系统，permission系统
+5. 统一的错误处理
+6. get的参数args中获取;post的参数form中获取，如果content-type = 'application/json'则通过get_json()获取;values是args和form的组合
 
 
