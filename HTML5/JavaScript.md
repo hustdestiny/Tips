@@ -34,10 +34,114 @@ var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 arr.reduce(add); // 45
 ```
 
+## 对象的创建 ##
+1. 根据对象创建对象
+
+```javascript
+var Student = {
+    name: 'Robot',
+    height: 1.2,
+    run: function() {
+        console.log(this.name + ' is running...')
+    }
+}
+
+var xiaoming = {
+    name: '小明'
+};
+
+xiaoming.__proto__ = Student // xiaoming的原型只想Student对象
+```
+
+2. 通过Object.create(Student) 工厂创建对象
+
+```javascript
+function createStudent(name) {
+    var s = Object.create(Student)
+    s.name = name
+    return s
+}
+
+// xiaoming.__proto__ === Student; // true
+```
+
+3. 构造函数创建对象
+
+```javascript
+function Student(name) {
+    this.name = name;
+    this.hello = function () {
+        alert('Hello, ' + this.name + '!')
+    }
+}
+
+var xiaoming = new Student('小明')
+
+xiaoming.constructor === Student.prototype.constructor; // 小明的构造器 等于 构造的函数原型对象的构造器
+Student.prototype.constructor === Student; //构造的函数原型对象的构造器 等于 构造函数
+
+Object.getPrototypeOf(xiaoming) == Student.prototype;
+```
+
+对象（比如xiaoming）只有__proto__, 确没有prototype, 
+构造函数（比如Student）有prototype, 它只想某个对象，也就是小明的原型
+这个对象有个constructor属性指向构造函数（Student）
+
+这个时候我们需要把，对象的方法放到原型对象上，达到公用的目的
+
+```javascript
+function Student(name) {
+    this.name = name;
+}
+
+Student.prototype.hello = function () {
+    alert('Hello, ' + this.name + '!')  
+};
+```
+
+最后也可以使用一个工厂方法创建对象
+
 ## 继承 ##
 js中的继承跟传统的java c++ 和oc实现不太一样，它是通过prototype来实现的
 1. 原型继承
+
+```javascript
+function inherits(Child, Parent) {
+    var F = function () {}; 
+    F.prototype = Parent.prototype; 
+    Child.prototype = new F(); 
+    Child.prototype.constructor = Child; 
+    // 1、创建一个空函数
+    // 2、空函数的原型对象 --> 父类构造函数的原型对象
+    // 3、子类构造函数的原型对象 -->通过空构造函数创建的一个对象。 因为 通过这个空构造函数的对象的原型对象 --> 父类构造函数的原型对象，所有继承链就ok了
+    // 4、子类原型对象的构造器 --> 子类构造函数
+}
+```
+
 2. class继承
+```javascript
+class Student {
+    constructor(name) {
+        this.name = name
+    }
+
+    hello () {
+
+    }
+}
+
+
+class PrimaryStudent extends Student {
+    constructor(name, grade) {
+        super(name):
+        this.grade = grade;
+    }
+
+    myGrade() {
+        alert('I am at grade ' + this.grade)
+    }
+}
+```
 
 
 ## CSS ##
