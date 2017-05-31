@@ -165,3 +165,12 @@ Bootstrap
 Jquery
 ...
 太多啦
+
+
+1. Sublime                      // 编辑器
+2. JavaScript/HTML5/CSS3        // 基础语言
+3. Chrome                       // 浏览器
+4. Git                          // 版本控制
+5. jQuery/AngularJS/React/Vue.js or jQuery-mobile/React-Native // 开发框架
+6. Webpack/gulp/grunt           // 项目构建
+7. npm                          // 包管理工具
