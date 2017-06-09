@@ -41,12 +41,14 @@ encoding:使用在URLEncoding.default,中取出request.values中取出get请求�
 
 ## Flask 其他基础的配置
 
+```bash
 virtaulenv --no-site-packages venv
 source venv/bin/activate
 pip3 install flask
 pip3 install SQLAlchemy
 pip3 install mysql-connector-python-rf
 pip3 freeze > requirements.txt
+```
 
 deactivate
 

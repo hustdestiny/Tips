@@ -20,3 +20,15 @@
     认证机制解决的问题是用户是谁；权限机制解决的问题是用户是否被许可使用，修改，删除或者创建资源。（1.session auth 2.basic auth 3.token auth 4 OAuth）
 
     其中最好的是最后这种OAuth2.0 
+
+5. 开发一个restful 的前置条件
+    * flask
+    * sqlalchemy
+    * oauth2.0
+    * json-serlize
+    * permission system
+    * config
+    * log
+    * test
+    * deploy
+    * cache
