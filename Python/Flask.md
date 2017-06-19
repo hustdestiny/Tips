@@ -126,5 +126,6 @@ res.set_cookie("key", "value")
 4. restful定义接口，auth系统，permission系统
 5. 统一的错误处理
 6. get的参数args中获取;post的参数form中获取，如果content-type = 'application/json'则通过get_json()获取;values是args和form的组合
+7. flask-login可以解决用户的认证问题，权限还需三级 (权限 --> Role --> User)处理
 
 
