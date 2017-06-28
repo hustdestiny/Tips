@@ -4,7 +4,7 @@
 
 通读了文档一遍之后，发现了一个道理。难得不是vue而是webpack...
 
-vue + webpack + cli + element-ui + axios
+vue + vuex + vue-router + webpack + cli + element-ui + axios
 
 0. 安装npm, 不做过多的讨论，自行查找
 1. 安装cli: 
@@ -25,6 +25,8 @@ npm install
 npm i element-ui -S
 npm i style-loader -S
 npm i axios -S
+npm i vuex -S
+npm i vue-router -S
 ```
 5. 需要将更改webpack.config.js的配置
 ```json
@@ -37,10 +39,12 @@ npm i axios -S
     loader: 'file-loader'
   }]
 ```
+
 6. 通过修改index.html, App.vue, main.js, router.js, children.vue
 配置路由
 建立vue对象
 ...
+
 7. 运行项目
 ```bash
 npm run dev
