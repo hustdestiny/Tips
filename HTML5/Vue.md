@@ -51,3 +51,15 @@ npm run dev
 ```
 
 8. 注意点 vue文件中template节点下只能有一个子节点
+
+9. Vuex的基本流程  
+        UIEvent 
+        --> methods (mapActions)
+        --> actions 
+        --> mutations 
+        --> state 
+        --> getters (state => state.moduleA.property)
+        --> computed (mapGetters)
+        --> UI 
+        --> UIEvent
+这样就形成一个单项数据流
