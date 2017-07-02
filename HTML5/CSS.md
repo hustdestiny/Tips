@@ -10,3 +10,11 @@ content
 分列
 混合布局
 footer
+
+
+{
+    position: absolute;
+    position: relative;
+    position: fixed;
+    position: flex;
+}
